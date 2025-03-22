@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
@@ -45,14 +46,25 @@ public class ResendOTPTest {
         WebElement LoginButton = driver.findElement(By.xpath("//button[span[text()='Send OTP Code']]"));
         LoginButton.click();
         
-        // wait for button to clickable
-        WebElement resendOtpButton = driver.findElement(By.xpath("//button[contains(., 'Resend Code')]"));
-        while (!resendOtpButton.isEnabled()) {
-        Thread.sleep(1000); } // Wait until the button is enabled
-        resendOtpButton.click();
+        // ✅ Wait for "Resend OTP" button to be clickable
 
-        // Capture success message after clicking Resend OTP
-        WebElement successMessage = driver.findElement(By.xpath("//p[contains(text(), 'new otp code sent successfully')]"));
+        WebElement resendOtpButton = wait.until(
+            ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(., 'Resend Code')]"))
+            );
+        resendOtpButton.click();
+        
+        // ✅ Wait for success message
+        WebElement successMessage = wait.until(
+            ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[contains(text(), 'new otp code sent successfully')]"))
+            );
+            
+        // Validate success message
         assertTrue(successMessage.isDisplayed(), "Resend OTP failed!");
+    }
+    @AfterEach
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
