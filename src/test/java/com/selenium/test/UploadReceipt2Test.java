@@ -2,14 +2,14 @@ package com.selenium.test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//import java.io.File;
+import java.io.File;
 import java.time.Duration;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
-//import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -18,7 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class OTPLoginTest {
+public class UploadReceipt2Test {
     private WebDriver driver;
     private WebDriverWait wait;
 
@@ -31,7 +31,7 @@ public class OTPLoginTest {
     }
 
     @Test
-    public void testLoginWithOTP() {
+    public void testUploadReceipt2() {
         // Open login page
         driver.get("https://my.haleon-rewards.d-rive.net/login");
 
@@ -39,18 +39,10 @@ public class OTPLoginTest {
         WebElement phoneField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("login-form_phone"))); // Update ID
         phoneField.sendKeys("137336651");
 
-        // Click on "Send OTP"
-        // If have ID
-        //WebElement sendOtpButton = driver.findElement(By.id("send-otp")); // Update ID
-        //sendOtpButton.click();    
-
         // Does not have id
         WebElement LoginButton = driver.findElement(By.xpath("//button[span[text()='Send OTP Code']]"));
         LoginButton.click();
 
-        // Wait for OTP input field (Assuming it's displayed after clicking "Send OTP")
-        //WebElement otpField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("otp"))); // Update ID
-        
         // *** MANUAL OTP ENTRY ***  
         System.out.println("Please enter OTP manually... waiting 60 seconds");
         try {
@@ -58,21 +50,6 @@ public class OTPLoginTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        // Click Login Button
-        //WebElement loginButton = driver.findElement(By.id("login-button")); // Update ID
-        //loginButton.click();
-
-        // Does not have id
-        //WebElement verifyButton = driver.findElement(By.xpath("//button[span[text()='Verify']]"));
-        //verifyButton.click();
-
-        // locate by class
-        //WebElement verifyButton = driver.findElement(By.cssSelector(".verify-btn button"));
-        //verifyButton.click();
-        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        //WebElement verifyButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".verify-btn button")));
-        //verifyButton.click();
 
         System.out.println("OTP detected! Clicking Verify button...");
 
@@ -103,6 +80,54 @@ public class OTPLoginTest {
 
         System.out.println("Login successful!");
 
+
+        //WebElement browseButton = wait.until(ExpectedConditions.elementToBeClickable(
+            //By.cssSelector("div.box-container-left > p.header-description")
+        //));
+        //((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", browseButton);
+        //((JavascriptExecutor) driver).executeScript("arguments[0].click();", browseButton);
+        
+        // Click "Upload Receipt" button in the bottom navigation bar
+        //WebElement uploadReceiptNavButton = wait.until(ExpectedConditions.presenceOfElementLocated(
+            //By.xpath("//nav//*[contains(text(), 'Upload Receipt')]")
+        //));
+        //((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", uploadReceiptNavButton);
+        //((JavascriptExecutor) driver).executeScript("arguments[0].click();", uploadReceiptNavButton);
+
+        WebElement uploadReceiptNavButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.cssSelector("img.img-upload-receipt")
+        ));
+        uploadReceiptNavButton.click();
+        
+        // Click on the upload section
+        WebElement uploadSection = wait.until(ExpectedConditions.presenceOfElementLocated(
+            By.xpath("//p[contains(text(), 'Upload your receipt')]")
+        ));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", uploadSection);
+        
+        // Prepare and verify the file to upload
+        String filePath = System.getProperty("user.home") + "/Pictures/Screenshots/test.png";
+        File file = new File(filePath);
+        assertTrue(file.exists(), "Test file not found!");
+        
+        WebElement fileInput = wait.until(ExpectedConditions.presenceOfElementLocated(
+            By.cssSelector("input[type='file']")
+        ));
+        fileInput.sendKeys(file.getAbsolutePath());
+        
+        // Click the submit button
+        WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[contains(@class, 'submit-receipt-btn')]")
+        ));
+        submitButton.click();
+        
+        WebElement doneUploadButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.cssSelector("button.receipt-success-button")
+        ));
+        doneUploadButton.click();
+        
+        System.out.println("Test Passed: Receipt uploaded successfully.");
+
     }
 
     @AfterEach
@@ -112,3 +137,4 @@ public class OTPLoginTest {
         }
     }
 }
+

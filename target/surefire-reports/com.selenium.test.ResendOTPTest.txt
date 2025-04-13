@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.selenium.test.ResendOTPTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.08 s - in com.selenium.test.ResendOTPTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.329 s - in com.selenium.test.ResendOTPTest

@@ -61,6 +61,14 @@
         <artifactId>junit-jupiter</artifactId>
         <version>5.9.1</version>
     </dependency>
+    
+    <!-- JSON -->
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>20210307</version>
+    </dependency>
+
 </dependencies>
 
   <build>
