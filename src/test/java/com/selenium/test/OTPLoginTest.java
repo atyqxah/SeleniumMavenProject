@@ -48,9 +48,6 @@ public class OTPLoginTest {
         // Does not have id
         WebElement LoginButton = driver.findElement(By.xpath("//button[span[text()='Send OTP Code']]"));
         LoginButton.click();
-
-        // Wait for OTP input field (Assuming it's displayed after clicking "Send OTP")
-        //WebElement otpField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("otp"))); // Update ID
         
         // *** MANUAL OTP ENTRY ***  
         System.out.println("Please enter OTP manually... waiting 60 seconds");
@@ -84,7 +81,6 @@ public class OTPLoginTest {
         verifyButton.click();
 
         System.out.println("Verify button clicked automatically!");
-
         
         // Popup done
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
@@ -103,7 +99,6 @@ public class OTPLoginTest {
         assertTrue(loginSuccess, "Login failed!");
 
         System.out.println("Login successful!");
-
     }
     
     @Test
@@ -118,12 +113,6 @@ public class OTPLoginTest {
         // Click "Send OTP"
         WebElement loginButton = driver.findElement(By.xpath("//button[span[text()='Send OTP Code']]"));
         loginButton.click();
-
-        // Wait for OTP field to appear (assuming the app reveals one)
-        //WebElement otpField = wait.until(ExpectedConditions.presenceOfElementLocated(
-            //By.cssSelector("input[type='tel']") // adjust selector if needed
-        //));
-
         // Enter an incorrect OTP
         // Wait until all 4 OTP inputs are present
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("input[aria-label*='Digit']"), 3));
