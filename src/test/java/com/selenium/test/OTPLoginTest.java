@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 //import java.io.File;
 import java.time.Duration;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -103,6 +104,64 @@ public class OTPLoginTest {
 
         System.out.println("Login successful!");
 
+    }
+    
+    @Test
+    public void testUnsuccessfulLoginWithIncorrectOTP() {
+        // Open login page
+        driver.get("https://my.haleon-rewards.d-rive.net/login");
+
+        // Enter valid phone number
+        WebElement phoneField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("login-form_phone")));
+        phoneField.sendKeys("137336651"); // valid phone number
+
+        // Click "Send OTP"
+        WebElement loginButton = driver.findElement(By.xpath("//button[span[text()='Send OTP Code']]"));
+        loginButton.click();
+
+        // Wait for OTP field to appear (assuming the app reveals one)
+        //WebElement otpField = wait.until(ExpectedConditions.presenceOfElementLocated(
+            //By.cssSelector("input[type='tel']") // adjust selector if needed
+        //));
+
+        // Enter an incorrect OTP
+        // Wait until all 4 OTP inputs are present
+        wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("input[aria-label*='Digit']"), 3));
+
+        // Get all 4 OTP input fields
+        List<WebElement> otpFields = driver.findElements(By.cssSelector("input[aria-label*='Digit']"));
+
+        // Enter OTP digits one by one (for incorrect OTP, e.g., "1234")
+        String otp = "1234";
+        for (int i = 0; i < otp.length(); i++) {
+            WebElement field = otpFields.get(i);
+            wait.until(ExpectedConditions.elementToBeClickable(field));
+            field.sendKeys(Character.toString(otp.charAt(i)));
+        }
+
+        // Click Verify
+        WebElement verifyButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[span[text()='Verify']]")
+        ));
+        verifyButton.click();
+
+        // Wait for error message
+        boolean isErrorShown = false;
+        try {
+            WebElement errorMsg = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.xpath("//*[contains(text(), 'Incorrect') or contains(text(), 'invalid') or contains(text(), 'wrong')]")
+            ));
+            isErrorShown = errorMsg.isDisplayed();
+        } catch (Exception e) {
+            isErrorShown = false;
+        }
+
+        // Ensure we don't navigate to the home/dashboard page
+        boolean urlChanged = driver.getCurrentUrl().contains("home");
+
+        assertTrue(isErrorShown || !urlChanged, "OTP verification incorrectly succeeded!");
+
+        System.out.println("Unsuccessful login with wrong OTP handled correctly.");
     }
 
     @AfterEach
