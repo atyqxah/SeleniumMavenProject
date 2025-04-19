@@ -87,24 +87,69 @@ public class UpdateDetailsTest {
         // Check and update Name
         WebElement nameInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("register_name")));
         String currentName = nameInput.getAttribute("value");
-        System.out.println("Current Name: " + currentName);  // Debugging line
+        System.out.println("Current Name: " + currentName);
         
         if (!"Junior".equals(currentName)) {
-            // Use JavaScript to clear the value
-            ((JavascriptExecutor) driver).executeScript("arguments[0].value = '';", nameInput);
+            // Focus the field
+            nameInput.click();
+        
+            // Use JS to fully clear the value
+            ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].value = '';" +
+                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                nameInput
+            );
+        
+            // Send new value
             nameInput.sendKeys("Junior");
-            // Trigger blur event by clicking somewhere else or sending an escape key to focus out
-            nameInput.sendKeys("\u0009");  // Simulate pressing the Tab key (blur the field)
-            System.out.println("Name updated to: Junior");  // Debugging line
+        
+            // Dispatch input/change events again to ensure frontend reacts
+            ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                nameInput
+            );
+        
+            // Blur the field to finalize
+            nameInput.sendKeys("\u0009");
+        
+            System.out.println("Name updated to: Junior");
         }
     
         // Check and update Email
-        //WebElement emailInput = driver.findElement(By.id("register_email"));
-        //String currentEmail = emailInput.getAttribute("value");
-        //if (!"junior@mail.com".equals(currentEmail)) {
-            //emailInput.clear();
-            //emailInput.sendKeys("junior@mail.com");
-        //}
+
+        WebElement emailInput = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("register_email")));
+        String currentEmail = emailInput.getAttribute("value");
+        System.out.println("Current Name: " + currentEmail);
+        
+        if (!"junior@mail.com".equals(currentEmail)) {
+            // Focus the field
+            emailInput.click();
+        
+            // Use JS to fully clear the value
+            ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].value = '';" +
+                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                emailInput
+            );
+        
+            // Send new value
+            emailInput.sendKeys("junior@mail.com");
+        
+            // Dispatch input/change events again to ensure frontend reacts
+            ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+                "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+                emailInput
+            );
+        
+            // Blur the field to finalize
+            emailInput.sendKeys("\u0009");
+        
+            System.out.println("Email updated to: junior@mail.com");
+        }
     
         // Check and update DOB
         //WebElement dobInput = driver.findElement(By.id("register_dob"));
