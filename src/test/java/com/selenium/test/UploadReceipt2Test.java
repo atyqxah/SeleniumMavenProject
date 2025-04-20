@@ -130,6 +130,76 @@ public class UploadReceipt2Test {
 
     }
 
+    @Test
+    public void testUnsuccessfulUploadReceipt() {
+        // Open login page
+        driver.get("https://my.haleon-rewards.d-rive.net/login");
+
+        // Locate and enter phone number
+        WebElement phoneField = wait.until(ExpectedConditions.presenceOfElementLocated(By.id("login-form_phone"))); // Update ID
+        phoneField.sendKeys("137336651");
+
+        // Does not have id
+        WebElement LoginButton = driver.findElement(By.xpath("//button[span[text()='Send OTP Code']]"));
+        LoginButton.click();
+
+        // MANUAL OTP ENTRY
+        System.out.println("Please enter OTP manually... waiting 60 seconds");
+        try {
+            Thread.sleep(30000); // Allow user to enter OTP manually
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("OTP detected! Clicking Verify button...");
+
+        // Wait for the Verify button to become clickable
+        WebElement verifyButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[span[text()='Verify']]")));
+
+        // Click the Verify button
+        verifyButton.click();
+
+        System.out.println("Verify button clicked automatically!");
+
+        // Popup done
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+        
+        // Wait until the modal is visible
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("ant-modal")));
+        
+        // Wait for the "Done" button inside the modal
+        WebElement doneButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[span[text()='Done']]")));
+        
+        // Click the "Done" button
+        doneButton.click();
+
+        // Wait for login confirmation (Check if Dashboard or Home appears)
+        boolean loginSuccess = wait.until(ExpectedConditions.urlContains("home")); // Modify as needed
+        assertTrue(loginSuccess, "Login failed!");
+
+        System.out.println("Login successful!");
+
+        WebElement uploadReceiptNavButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.cssSelector("img.img-upload-receipt")
+        ));
+        uploadReceiptNavButton.click();
+        
+        // Click the submit button
+        WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(
+            By.xpath("//button[contains(@class, 'submit-receipt-btn')]")
+        ));
+        submitButton.click();
+                      
+        // ✅ Assertion: Check for error message after trying to submit empty
+        WebElement errorMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//p[contains(text(), 'Please upload your receipt image!')]")
+        ));
+
+        assertTrue(errorMessage.isDisplayed(), "Error message not displayed!");
+        System.out.println("✅ Test Passed: Error message is displayed as expected.");
+
+    }
+
     @AfterEach
     public void tearDown() {
         if (driver != null) {

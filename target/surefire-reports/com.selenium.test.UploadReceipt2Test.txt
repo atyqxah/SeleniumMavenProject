@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.selenium.test.UploadReceipt2Test
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 45.431 s - in com.selenium.test.UploadReceipt2Test
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 79.777 s - in com.selenium.test.UploadReceipt2Test
