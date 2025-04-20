@@ -75,7 +75,7 @@ public class UpdateDetailsTest {
         // Update Name, Email, and DOB
         updateInputField("register_name", "Atika");
         updateInputField("register_email", "atika@mail.com");
-        updateDobField("register_dob", "2003-05");
+        updateDobField("register_dob", "2003-05"); // Set DOB correctly via JS
 
         // Save changes: Actions -> JS -> fallback
         WebElement saveButton = wait.until(ExpectedConditions.presenceOfElementLocated(
@@ -145,21 +145,19 @@ public class UpdateDetailsTest {
         System.out.println("Updated " + fieldId + " to: " + newValue);
     }
 
-    private void updateDobField(String fieldId, String newValue) throws InterruptedException {
+    // ✅ Fix for calendar-style DOB field
+    private void updateDobField(String fieldId, String newValue) {
         WebElement input = wait.until(ExpectedConditions.presenceOfElementLocated(By.id(fieldId)));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", input);
-        input.click();
-        input.sendKeys(Keys.chord(Keys.CONTROL, "a"));
-        input.sendKeys(Keys.DELETE);
-        Thread.sleep(300);
 
-        for (char c : newValue.toCharArray()) {
-            input.sendKeys(Character.toString(c));
-            Thread.sleep(50);
-        }
+        ((JavascriptExecutor) driver).executeScript(
+            "arguments[0].value = arguments[1];" +
+            "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));" +
+            "arguments[0].dispatchEvent(new Event('change', { bubbles: true }));",
+            input, newValue
+        );
 
-        ((JavascriptExecutor) driver).executeScript("arguments[0].blur();", input);
-        System.out.println("Updated " + fieldId + " to: " + newValue);
+        System.out.println("Updated " + fieldId + " to: " + newValue + " via JS");
     }
 
     @AfterEach

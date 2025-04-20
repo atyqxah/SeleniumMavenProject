@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.selenium.test.OTPLoginTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 57.754 s - in com.selenium.test.OTPLoginTest
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 36.904 s - in com.selenium.test.OTPLoginTest
