@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.selenium.test.UpdateDetailsTest
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 135.405 s - in com.selenium.test.UpdateDetailsTest
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 62.685 s - in com.selenium.test.UpdateDetailsTest
