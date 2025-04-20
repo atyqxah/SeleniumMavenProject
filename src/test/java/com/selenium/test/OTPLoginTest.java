@@ -49,28 +49,13 @@ public class OTPLoginTest {
         WebElement LoginButton = driver.findElement(By.xpath("//button[span[text()='Send OTP Code']]"));
         LoginButton.click();
         
-        // *** MANUAL OTP ENTRY ***  
+        // MANUAL OTP ENTRY
         System.out.println("Please enter OTP manually... waiting 60 seconds");
         try {
             Thread.sleep(30000); // Allow user to enter OTP manually
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-        // Click Login Button
-        //WebElement loginButton = driver.findElement(By.id("login-button")); // Update ID
-        //loginButton.click();
-
-        // Does not have id
-        //WebElement verifyButton = driver.findElement(By.xpath("//button[span[text()='Verify']]"));
-        //verifyButton.click();
-
-        // locate by class
-        //WebElement verifyButton = driver.findElement(By.cssSelector(".verify-btn button"));
-        //verifyButton.click();
-        //WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
-        //WebElement verifyButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".verify-btn button")));
-        //verifyButton.click();
 
         System.out.println("OTP detected! Clicking Verify button...");
 
@@ -95,7 +80,7 @@ public class OTPLoginTest {
         doneButton.click();
 
         // Wait for login confirmation (Check if Dashboard or Home appears)
-        boolean loginSuccess = wait.until(ExpectedConditions.urlContains("home")); // Modify as needed
+        boolean loginSuccess = wait.until(ExpectedConditions.urlContains("home")); 
         assertTrue(loginSuccess, "Login failed!");
 
         System.out.println("Login successful!");
